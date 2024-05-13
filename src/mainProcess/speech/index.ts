@@ -1,6 +1,6 @@
 import config from "../../config";
 import RPCClient = require("@alicloud/pop-core");
-export const getToken = () => {
+export async function getToken() {
     const client = new RPCClient({
         accessKeyId: config.ALI_ACCESS_KEY,
         accessKeySecret: config.ALI_ACCESS_KEY_SECRET,
@@ -8,9 +8,7 @@ export const getToken = () => {
         apiVersion: '2019-02-28'
     });
 
-    client.request('CreateToken', {}).then((result: any) => {
-        console.log(result.Token)
-        console.log("token = " + result.Token.Id)
-        console.log("expireTime = " + result.Token.ExpireTime)
-    });
+    const result: any = await client.request('CreateToken', {});
+    console.log(result.Token)
+    return result.Token.Id;
 }
